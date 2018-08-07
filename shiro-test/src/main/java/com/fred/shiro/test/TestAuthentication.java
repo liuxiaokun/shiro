@@ -5,6 +5,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.SimpleAccountRealm;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.Assert;
 
 /**
  * @author liuxiaokun
@@ -25,10 +26,18 @@ public class TestAuthentication {
         //2. 主体提交认证请求
         Subject subject = SecurityUtils.getSubject();
 
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("fred", "123");
+        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken("fred", "1231");
+        //登陆， 用户名不对：UnknownAccountException，密码不对：IncorrectCredentialsException
         subject.login(usernamePasswordToken);
 
+        //true
         System.out.println(subject.isAuthenticated());
+
+        //登出
+        subject.logout();
+        //false
+        System.out.println(subject.isAuthenticated());
+
 
     }
 }

@@ -5,18 +5,17 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.realm.SimpleAccountRealm;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.Assert;
 
 /**
  * @author liuxiaokun
- * 测试认证用户名和密码
+ * 测试授权
  */
-public class TestAuthentication {
+public class TestAuthorization {
 
     public static void main(String[] args) {
 
         SimpleAccountRealm simpleAccountRealm = new SimpleAccountRealm();
-        simpleAccountRealm.addAccount("fred", "123");
+        simpleAccountRealm.addAccount("fred", "123", "admin", "user");
 
         //1. 构建securityManager环境
         DefaultSecurityManager defaultSecurityManager = new DefaultSecurityManager();
@@ -32,11 +31,9 @@ public class TestAuthentication {
 
         //true
         System.out.println(subject.isAuthenticated());
+        //校验不通过：UnauthorizedException: Subject does not have role [admin1]
+        subject.checkRoles("admin", "user");
 
-        //登出
-        subject.logout();
-        //false
-        System.out.println(subject.isAuthenticated());
 
 
     }
